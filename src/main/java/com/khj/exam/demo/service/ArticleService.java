@@ -11,7 +11,7 @@ import com.khj.exam.demo.vo.Article;
 public class ArticleService {
 	private ArticleRepository articleRepository;
 	
-	public ArticleService() {
+	public ArticleService(ArticleRepository articleRepository) {
 		this.articleRepository = articleRepository;
 		articleRepository.makeTestData();
 	}
