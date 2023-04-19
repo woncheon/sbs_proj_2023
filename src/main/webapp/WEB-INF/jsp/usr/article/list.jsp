@@ -1,15 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>article 메~인</title>
-</head>
-<body>
-   <h1>article안녕?</h1>
-   
-   <hr />
+<c:set var="pageTitle" value="게시물 리스트"/>
+<%@include file="../common/header.jspf" %>
    <table border="1">
       <thead>
          <tr>
@@ -24,7 +16,7 @@
          <c:forEach var="article" items="${articles }">
          <tr>
             <td>${article.id }</td>
-            <td>${article.regDate }</td>
+            <td>${article.regDate.substring(2,16) }</td>
             <td>${article.updateDate }</td>
             <td>${article.memberId }</td>
             <td>
@@ -34,5 +26,4 @@
          </c:forEach>
       </tbody>
    </table>
-</body>
-</html>
+<%@include file="../common/footer.jspf" %>
