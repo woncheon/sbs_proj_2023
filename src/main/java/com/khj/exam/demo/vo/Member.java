@@ -1,5 +1,7 @@
 package com.khj.exam.demo.vo;
 
+import java.util.Date;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Member {
 	private int id;
-	private String regDate;
-	private String updateDate;
+	private Date regDate;
+	private Date updateDate;
 	private String loginId;
 	private String loginPw;
 	private int authLevel;
