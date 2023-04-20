@@ -5,19 +5,53 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" href="/resource/common.css" />
+<!-- 제이쿼리 불러오기 -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+<!-- 테일윈드 불러오기 -->
+<!-- 노말라이즈, 라이브러리까지 한번에 해결 -->
+<script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
+
+<!-- 폰트어썸 불러오기 -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
 <script src="/resources/common.js" defer="defer"></script>
 <title>${pageTitle }</title>
 </head>
 <body>
-   <h1>article안녕?</h1>
    <header>
-   		<a href="#">로고</a>
+   		 <div class="flex h-20 container mx-auto">
+      <a href="/" class="flex items-center px-3">
+        <span>로고</span>
+      </a>
+
+      <div class="flex-grow"></div>
+
+      <ul class="flex">
+        <li>
+          <a href="/" class="h-full flex items-center px-3 hover:underline">
+            <span>홈</span>
+          </a>
+        </li>
+        <li>
+          <a href="/usr/article/list" class="h-full flex items-center px-3 hover:underline">
+            <span>리스트</span>
+          </a>
+        </li>
+        <li>
+          <a href="/usr/member/login" class="h-full flex items-center px-3 hover:underline">
+            <span>로그인</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </header>
+
+  <section class="mt-5">
+    <div class="container mx-auto px-3">
+      <h1>${pageTitle} 페이지</h1>
+    </div>
+  </section>
    		
-   		<ul>
-   			<li><a href="/">홈</a></li>
-   			<li><a href="/usr/article/list">리스트</a></li>
-   			<li><a href="/usr/member/login">로그인</a></li>
-   		</ul>
-   </header>
    <hr/>
    <main>
