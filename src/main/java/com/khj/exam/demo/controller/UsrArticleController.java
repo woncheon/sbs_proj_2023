@@ -26,9 +26,7 @@ public class UsrArticleController {
    @ResponseBody
    public ResultData<Article> doAdd(HttpServletRequest req, String title, String body) {
 	   Rq rq=(Rq)req.getAttribute("rq");
-      if ( rq.isLogined() == false) {
-         return ResultData.from("F-A","로그인 후 이용 해주세요.");
-      }
+      
       
       //만약 title or body 입력을 안했을때
       if(Ut.empty(title)) {
