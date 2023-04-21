@@ -6,7 +6,7 @@
 
 <section class="mt-5">
    <div class="container mx-auto px-3">
-       <form method="POST" action="../article/doModify?id=${article.id }">
+       <form method="POST" action="../article/doModify">
        		<input type="hidden" name="id" value="${article.id }" />
           <div class="table-box-type-1">
             <table>
@@ -20,11 +20,11 @@
                 </tr>
                 <tr>
                   <th>작성날짜</th>
-                  <td>${article.regDate.substring(2, 16)}</td>
+                  <td>${article.getRegDateForPrint()}</td>
                 </tr>
                 <tr>
                   <th>수정날짜</th>
-                  <td>${article.updateDate.substring(2, 16)}</td>
+                  <td>${article.getUpdateDateForPrint()}</td>
                 </tr>
                 <tr>
                   <th>작성자</th>
@@ -33,14 +33,14 @@
                 <tr>
                   <th>제목</th>
                   <td>
-                  	<input type="text" class="w-96" name="title" placeholder="제목" value="${article.title}" />
+                  	<input type="text" class="w-96 input input-bordered w-full max-w-xs " name="title" placeholder="제목" value="${article.title}" />
                     
                   </td>
                 </tr>
                 <tr>
                   <th>내용</th>
                   <td>
-                    <input type="text" class="w-96" name="body" placeholder="내용" value="${article.body}" />
+                   <textarea name= "body" placeholder="내용" class="textarea textarea-bordered textarea-lg w-full max-w-xs" ></textarea>
                   </td>
                 </tr>
                 <tr>
@@ -55,10 +55,10 @@
           </div>
          
          <div class="btns">
-            <button class="btn-text-link" type="button" onclick="history.back();">뒤로가기</button>
-               <a  class="btn-text-link"  href="../article/modify?id=${article.id }">게시물 수정</a>
+            <button class="btn btn-primary" type="button" onclick="history.back();">뒤로가기</button>
+               <a  class="btn btn-link"  href="../article/modify?id=${article.id }">게시물 수정</a>
             <c:if test="${article.extra__actorCanDelete}">
-               <a class="btn-text-link"  onclick="if( confirm('정말 삭제하시겠습니까?') == false )return false;" href="../article/doDelete?id=${article.id }">게시물 삭제</a>
+               <a class="btn btn-link"  onclick="if( confirm('정말 삭제하시겠습니까?') == false )return false;" href="../article/doDelete?id=${article.id }">게시물 삭제</a>
             </c:if>
          </div>
        </form>

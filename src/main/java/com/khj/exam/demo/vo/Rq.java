@@ -2,6 +2,7 @@ package com.khj.exam.demo.vo;
 
 import java.io.IOException;
 
+import com.khj.exam.demo.service.MemberService;
 import com.khj.exam.demo.util.Ut;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,11 +17,14 @@ public class Rq {
    @Getter
    private int loginedMemberId;
    
+   @Getter
+   private Member loginedMember;
+   
    private HttpServletRequest req;
    private HttpServletResponse resp;
    private HttpSession session;
    
-   public Rq(HttpServletRequest req, HttpServletResponse resp) {
+   public Rq(HttpServletRequest req, HttpServletResponse resp,MemberService memberService) {
       this.req = req;
       this.resp = resp;
       
@@ -34,6 +38,7 @@ public class Rq {
          
          isLogined = true;
          loginedMemberId = (int) session.getAttribute("loginMemberId");
+         loginedMember=memberService.getMemberById(loginedMemberId);
       }
       
       this.isLogined = isLogined;
