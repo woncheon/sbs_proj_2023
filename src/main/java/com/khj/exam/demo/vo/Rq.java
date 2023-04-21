@@ -78,6 +78,12 @@ public class Rq {
       req.setAttribute("historyBack", true);
       return "common/js";
    }
-   
+
+public String historyBack(String msg) {
+	return Ut.jsHistoryBack(msg);
+}
+   public String jsReplace(String msg,String uri) {
+	   return Ut.jsReplace(msg, uri);
+   }
    
 }

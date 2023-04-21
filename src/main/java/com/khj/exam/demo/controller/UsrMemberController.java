@@ -75,27 +75,27 @@ public class UsrMemberController {
 		Rq rq=(Rq)req.getAttribute("rq");
 		
 		if(rq.isLogined()) {
-			return Ut.jsHistoryBack("이미 로그인 하셨습니다.");
+			return rq.historyBack("이미 로그인 하셨습니다.");
 		}
 		
 		if ( Ut.empty(loginId)) {
-			return Ut.jsHistoryBack("loginId를 입력해주세요.");
+			return rq.historyBack("loginId를 입력해주세요.");
 		}
 		
 		if ( Ut.empty(loginPw)  ) {
-			return Ut.jsHistoryBack("loginPw를 입력해주세요.");
+			return rq.historyBack("loginPw를 입력해주세요.");
 		}
 
 		Member member = memberService.getMemberByLoginId(loginId);
 		
 		if(member==null) {
-			return Ut.jsHistoryBack("존재하지 않는 아이디");
+			return rq.historyBack("존재하지 않는 아이디");
 		}
 		if(member.getLoginPw().equals(loginPw)==false) {
-			return Ut.jsHistoryBack("비밀번호 불일치");
+			return rq.historyBack("비밀번호 불일치");
 		}
 		rq.login(member);
-		return Ut.jsReplace(Ut.f("%s님 환영합니다.", member.getNickname()), "/");
+		return rq.jsReplace(Ut.f("%s님 환영합니다.", member.getNickname()), "/");
 	}
 	
 	
@@ -106,12 +106,12 @@ public class UsrMemberController {
 		Rq rq= (Rq)req.getAttribute("rq");
 		
 		if(!rq.isLogined()) {
-			return Ut.jsHistoryBack("이미 로그아웃 상태입니다.");
+			return rq.historyBack("이미 로그아웃 상태입니다.");
 		}
 
 		
 		rq.logout();
-		return Ut.jsReplace("로그아웃 되었습니다.","/");
+		return rq.jsReplace("로그아웃 되었습니다.","/");
 	}
 	
 	
