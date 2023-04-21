@@ -18,11 +18,12 @@ public class Rq {
    
    private HttpServletRequest req;
    private HttpServletResponse resp;
+   private HttpSession session;
    
    public Rq(HttpServletRequest req, HttpServletResponse resp) {
       this.req = req;
       this.resp = resp;
-      
+      this.session=req.getSession();
       HttpSession httpSession = req.getSession();
       
       boolean isLogined = false;
@@ -37,6 +38,7 @@ public class Rq {
       
       this.isLogined = isLogined;
       this.loginedMemberId = loginedMemberId;
+      
    }
    
    public void printHistoryBackJs(String msg) {
@@ -63,6 +65,10 @@ public class Rq {
    
    public void println(String str) {
       print(str + "\n");
+   }
+   
+   public void login(Member member) {
+	   session.setAttribute("loginMemberId", member.getId());
    }
    
    

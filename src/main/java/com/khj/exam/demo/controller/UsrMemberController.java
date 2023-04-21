@@ -10,7 +10,9 @@ import com.khj.exam.demo.service.MemberService;
 import com.khj.exam.demo.util.Ut;
 import com.khj.exam.demo.vo.Member;
 import com.khj.exam.demo.vo.ResultData;
+import com.khj.exam.demo.vo.Rq;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
 @Controller
@@ -69,13 +71,10 @@ public class UsrMemberController {
 	}
 	@RequestMapping("/usr/member/doLogin")
 	@ResponseBody
-	public String doLogin(HttpSession session, String loginId, String loginPw) {
-		boolean isLogined= false;
-		if(session.getAttribute("loginMemberId")!=null) {
-			isLogined=true;
-		}
+	public String doLogin(HttpServletRequest req, String loginId, String loginPw) {
+		Rq rq=(Rq)req.getAttribute("rq");
 		
-		if(isLogined) {
+		if(rq.isLogined()) {
 			return Ut.jsHistoryBack("이미 로그인 하셨습니다.");
 		}
 		
@@ -95,7 +94,7 @@ public class UsrMemberController {
 		if(member.getLoginPw().equals(loginPw)==false) {
 			return Ut.jsHistoryBack("비밀번호 불일치");
 		}
-		session.setAttribute("loginMemberId", member.getId());
+		rq.login(member);
 		return Ut.jsReplace(Ut.f("%s님 환영합니다.", member.getNickname()), "/");
 	}
 	
