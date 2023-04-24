@@ -2,15 +2,16 @@ package com.khj.exam.demo.controller;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.khj.exam.demo.service.ArticleService;
+import com.khj.exam.demo.service.BoardService;
 import com.khj.exam.demo.util.Ut;
 import com.khj.exam.demo.vo.Article;
+import com.khj.exam.demo.vo.Board;
 import com.khj.exam.demo.vo.ResultData;
 import com.khj.exam.demo.vo.Rq;
 
@@ -18,15 +19,23 @@ import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
 public class UsrArticleController {
-   @Autowired
    private ArticleService articleService;
+   
+   private BoardService boardService;
+   private Rq rq;
+   
+   public UsrArticleController(ArticleService articleService, BoardService boardService, Rq rq) {
+	   this.articleService=articleService;
+	   this.boardService=boardService;
+	   this.rq=rq;
+   }
+   
    
    // 액션 메서드 시작
    @RequestMapping("/usr/article/doWrite")
    @ResponseBody
    public String doWrite(HttpServletRequest req, String title, String body, String replaceUri) {
-	   Rq rq=(Rq)req.getAttribute("rq");
-      
+	   
       
       //만약 title or body 입력을 안했을때
       if(Ut.empty(title)) {
@@ -55,18 +64,25 @@ public class UsrArticleController {
    }
    
    @RequestMapping("/usr/article/list")
-   public String showList(HttpServletRequest req, Model model) {
-	   Rq rq=(Rq)req.getAttribute("rq");
+   public String showList(HttpServletRequest req, Model model, int boardId) {
+	   Board board=boardService.getBoardById(boardId);
       
-      List<Article>  articles = articleService.getForPrintArticles(rq.getLoginedMemberId());
+	   if(board==null) {
+		   return rq.historyBackJsOnview(Ut.f("%d게시판은 존재하지 않습니다.",boardId));
+	   }
+	   
+	   int articlesCount= articleService.getArticlesCount(boardId);
+	   
+      List<Article>  articles = articleService.getForPrintArticles(rq.getLoginedMemberId(),boardId);
+      model.addAttribute("boardId", boardId);
+      model.addAttribute("articlesCount", articlesCount);
       model.addAttribute("articles", articles );
       
       return "usr/article/list";
    }
    
    @RequestMapping("/usr/article/detail")
-   public String showList(HttpServletRequest req, Model model, int id) {
-	   Rq rq=(Rq)req.getAttribute("rq");
+   public String showdetail(HttpServletRequest req, Model model, int id) {
       
       Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
       
@@ -78,7 +94,6 @@ public class UsrArticleController {
    @RequestMapping("/usr/article/getArticle")
    @ResponseBody
    public ResultData<Article> getArticle(HttpServletRequest req, int id) {
-	   Rq rq=(Rq)req.getAttribute("rq");
       
       Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
       
@@ -92,7 +107,6 @@ public class UsrArticleController {
    @RequestMapping("/usr/article/doDelete")
    @ResponseBody
    public String doDelete(HttpServletRequest req, int id) {
-	   Rq rq=(Rq)req.getAttribute("rq");
       
       Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(),id);
       
@@ -113,7 +127,6 @@ public class UsrArticleController {
    
    public String showmodify(HttpServletRequest req, Model model, int id, String title, String body) {
 	   
-	   Rq rq=(Rq)req.getAttribute("rq");
 	   
 	   
 	   Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(),id);
@@ -134,7 +147,6 @@ public class UsrArticleController {
    @ResponseBody
    public String doModify(HttpServletRequest req, int id, String title, String body) {
       
-	   Rq rq=(Rq)req.getAttribute("rq");
      
       
       Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(),id);

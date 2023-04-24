@@ -11,7 +11,7 @@ import com.khj.exam.demo.vo.Article;
 public interface ArticleRepository {
 	public Article getForPrintArticle(@Param("id") int id);
 	
-	public List<Article> getForPrintArticles();
+	public List<Article> getForPrintArticles(@Param("boardId")int boardId);
 	
 	public void writeArticle(@Param("memberId")int memberId,@Param("title") String title, @Param("body") String body);
 	
@@ -20,6 +20,8 @@ public interface ArticleRepository {
 	public void modifyArticle(@Param("id") int id, @Param("title") String title, @Param("body") String body);
 
 	public int getLastInsertId();
+
+	public int getArticlesCount(@Param("boardId")int boardId);
 
 	
 	

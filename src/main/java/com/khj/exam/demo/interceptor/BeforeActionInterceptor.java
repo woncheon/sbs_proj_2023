@@ -16,8 +16,12 @@ public class BeforeActionInterceptor implements HandlerInterceptor {
 	private MemberService memberService;
 	@Override
 	public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) throws Exception {
-		Rq rq=new Rq(req,resp,memberService);
-		req.setAttribute("rq", rq);
+		/*
+		 * rq에 컴포넌트를 붙였기에 자동으로 만들어줘서 여기서 rq를 해줄 필요가 없음
+		 * Rq rq=new Rq(req,resp,memberService);
+		 *  req.setAttribute("rq", rq);
+		 */
+		
 
 		return HandlerInterceptor.super.preHandle(req, resp, handler);
 	}

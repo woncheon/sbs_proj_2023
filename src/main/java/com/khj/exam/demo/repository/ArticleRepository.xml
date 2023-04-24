@@ -12,14 +12,29 @@
 	</insert>
 	
 	<select id="getForPrintArticles" resultType="Article">
-		 SELECT A.*,
+		
+		SELECT A.*,
 		M.nickName AS extra__writerName
 		FROM article AS A
 		LEFT JOIN `member` AS M
 		ON A.memberId=M.id
+		
+			<if test="boardId!=0">
+				where A.boardId=#{boardId}
+			</if>
+		
 		ORDER BY
 		id DESC
 	</select>
+	
+	<select id="getArticlesCount" resultType="int">
+		select count(*) As cnt
+		from article as A
+		<if test="boardId!=0">
+			where A.boardId=#{boardId}
+		</if>
+	</select>
+	
 	
 	<select id="getForPrintArticle" resultType="Article">
 		SELECT A.*,
