@@ -5,6 +5,7 @@
 		INSERT INTO article
 		SET regDate = NOW(),
 		updateDate = NOW(),
+		boardId=#{boardId},
 		title = #{title},
 		`body` = #{body},
 		memberId=#{memberId}
@@ -18,13 +19,14 @@
 		FROM article AS A
 		LEFT JOIN `member` AS M
 		ON A.memberId=M.id
-		
 			<if test="boardId!=0">
 				where A.boardId=#{boardId}
 			</if>
-		
 		ORDER BY
 		id DESC
+		<if test="limitStart!=-1">
+			limit #{limitStart},#{limitTake}
+		</if>
 	</select>
 	
 	<select id="getArticlesCount" resultType="int">

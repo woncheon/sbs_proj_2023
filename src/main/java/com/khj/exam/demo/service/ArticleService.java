@@ -23,9 +23,12 @@ public class ArticleService {
 		return article;
 	}
 	
-	public List<Article> getForPrintArticles(int actorId,int boardId) {
-		List<Article> articles= articleRepository.getForPrintArticles(boardId);
+	public List<Article> getForPrintArticles(int actorId,int boardId, int itemsCountInAPage, int page) {
 		
+		int limitStart=(page-1)*itemsCountInAPage;
+		int limitTake=itemsCountInAPage;
+		
+		List<Article> articles= articleRepository.getForPrintArticles(boardId,limitStart, limitTake);
 		for(Article article:articles) {
 			updateForPrintData(actorId, article);
 		}
@@ -54,8 +57,8 @@ public class ArticleService {
 		return ResultData.from("S-1", "게시물 삭제가 가능합니다");
 	}
 	
-	public ResultData<Integer> writeArticle(int loginedMemberId, String title, String body) {
-		articleRepository.writeArticle(loginedMemberId,title, body);
+	public ResultData<Integer> writeArticle(int loginedMemberId, int boardId,String title, String body) {
+		articleRepository.writeArticle(loginedMemberId, boardId, title, body);
 		int id= articleRepository.getLastInsertId();
 		return ResultData.from("S-1", Ut.f("%d번 게시물이 생성 되었습니다", id), "id", id);
 	}

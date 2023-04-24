@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.khj.exam.demo.service.ArticleService;
@@ -34,7 +35,7 @@ public class UsrArticleController {
    // 액션 메서드 시작
    @RequestMapping("/usr/article/doWrite")
    @ResponseBody
-   public String doWrite(HttpServletRequest req, String title, String body, String replaceUri) {
+   public String doWrite(int boardId, String title, String body, String replaceUri) {
 	   
       
       //만약 title or body 입력을 안했을때
@@ -46,7 +47,7 @@ public class UsrArticleController {
          return  rq.historyBack("body을(를) 입력 해주세요.");
       }
       
-      ResultData<Integer> writeArticleRd = articleService.writeArticle(rq.getLoginedMemberId(), title, body);
+      ResultData<Integer> writeArticleRd = articleService.writeArticle(rq.getLoginedMemberId(),boardId, title, body);
       
       int id = writeArticleRd.getData1();
       
@@ -64,16 +65,17 @@ public class UsrArticleController {
    }
    
    @RequestMapping("/usr/article/list")
-   public String showList(HttpServletRequest req, Model model, int boardId) {
+   public String showList( Model model, @RequestParam(defaultValue ="1")int boardId, @RequestParam(defaultValue ="1")int page) {
 	   Board board=boardService.getBoardById(boardId);
       
 	   if(board==null) {
-		   return rq.historyBackJsOnview(Ut.f("%d게시판은 존재하지 않습니다.",boardId));
+		   return rq.historyBackJsOnview(Ut.f("%d번 게시판은 존재하지 않습니다.",boardId));
 	   }
 	   
 	   int articlesCount= articleService.getArticlesCount(boardId);
+	   int itemsCountInAPage=10;
 	   
-      List<Article>  articles = articleService.getForPrintArticles(rq.getLoginedMemberId(),boardId);
+      List<Article>  articles = articleService.getForPrintArticles(rq.getLoginedMemberId(),boardId,itemsCountInAPage, page);
       model.addAttribute("boardId", boardId);
       model.addAttribute("articlesCount", articlesCount);
       model.addAttribute("articles", articles );
@@ -82,7 +84,7 @@ public class UsrArticleController {
    }
    
    @RequestMapping("/usr/article/detail")
-   public String showdetail(HttpServletRequest req, Model model, int id) {
+   public String showdetail( Model model, int id) {
       
       Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(), id);
       
@@ -106,7 +108,7 @@ public class UsrArticleController {
    
    @RequestMapping("/usr/article/doDelete")
    @ResponseBody
-   public String doDelete(HttpServletRequest req, int id) {
+   public String doDelete( int id) {
       
       Article article = articleService.getForPrintArticle(rq.getLoginedMemberId(),id);
       
@@ -125,7 +127,7 @@ public class UsrArticleController {
    
    @RequestMapping("/usr/article/modify")
    
-   public String showmodify(HttpServletRequest req, Model model, int id, String title, String body) {
+   public String showmodify( Model model, int id, String title, String body) {
 	   
 	   
 	   
@@ -145,7 +147,7 @@ public class UsrArticleController {
    }
    @RequestMapping("/usr/article/doModify")
    @ResponseBody
-   public String doModify(HttpServletRequest req, int id, String title, String body) {
+   public String doModify(int id, String title, String body) {
       
      
       
